@@ -274,9 +274,10 @@ async function gerarPedido(carrinho, caixa) {
   return numeroPedido;
 }
 
+async function finalizarVenda() {
 
-    
-   async function finalizarVenda() {
+  const carrinhoPedido =
+    JSON.parse(JSON.stringify(carrinho));
 
   Object.values(carrinho).forEach(item => {
 
@@ -291,14 +292,12 @@ async function gerarPedido(carrinho, caixa) {
 
   });
 
-  // Continua salvando localmente (backup)
   localStorage.setItem(
     "vendas_pix",
     JSON.stringify(vendas)
   );
 
-  // Salva também no Firebase
-  fetch(
+  await fetch(
     "https://festival-ecim-2026-default-rtdb.firebaseio.com/vendas_pix.json",
     {
       method: "PUT",
@@ -308,6 +307,9 @@ async function gerarPedido(carrinho, caixa) {
       body: JSON.stringify(vendas)
     }
   );
+
+  const numeroPedido =
+    await gerarPedido(carrinhoPedido, "PIX");
 
   carrinho = {};
 
@@ -317,34 +319,14 @@ async function gerarPedido(carrinho, caixa) {
 
   trocoSpan.textContent = "R$ 0,00";
 
-function atualizarFirebase() {
-  localStorage.setItem(
-    "vendas_pix",
-    JSON.stringify(vendas)
+  renderTabelaVendas();
+
+  alert(
+    "✅ Venda finalizada!\n\nPedido Nº " +
+    numeroPedido
   );
 
-  fetch(
-    "https://festival-ecim-2026-default-rtdb.firebaseio.com/vendas_pix.json",
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(vendas)
-    }
-  );
 }
-     
- renderTabelaVendas();
-
-const numeroPedido =
-  await gerarPedido(carrinho, "PIX");
-
-alert(
-  "✅ Venda finalizada!\n\n" +
-  "Pedido Nº " + numeroPedido
-);
-
     function mostrarRelatorio() {
       let texto = "📊 Relatório de Vendas:\n\n";
       let arrecadadoTotal = 0;
@@ -389,23 +371,7 @@ alert(
 
 
 
-    function atualizarFirebase() {
-  localStorage.setItem(
-    "vendas_pix",
-    JSON.stringify(vendas)
-  );
-
-  fetch(
-    "https://festival-ecim-2026-default-rtdb.firebaseio.com/vendas_pix.json",
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(vendas)
-    }
-  );
-}
+  
     function renderTabelaVendas() {
       const tbody = document.querySelector("#tabelaVendas tbody");
       tbody.innerHTML = "";
