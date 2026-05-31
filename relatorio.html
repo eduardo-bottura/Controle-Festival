@@ -63,13 +63,6 @@ Produtos Vendidos
 
 </div>
 
-<div class="flex justify-center mt-6">
-<button onclick="imprimirRelatorioGeral()"
-        class="bg-orange-500 text-white font-bold py-3 px-6 rounded-xl hover:bg-orange-600 transition">
-🖨️ Imprimir Relatório Geral
-</button>
-</div>
-
 <script>
 
 function moeda(valor){
@@ -150,106 +143,11 @@ produtos.forEach(produto=>{
  `;
 });
 
-function imprimirRelatorioGeral() {
-
-  const dataAtual = new Date();
-
-  const dataHora =
-    dataAtual.toLocaleDateString('pt-BR') +
-    " às " +
-    dataAtual.toLocaleTimeString('pt-BR');
-
-  const tabela =
-    document.querySelector("table").outerHTML;
-
-  const conteudo = `
-    <html>
-    <head>
-      <title>Relatório Geral - Festival ECIM 2026</title>
-
-      <style>
-
-        body{
-          font-family: Arial, sans-serif;
-          padding:20px;
-        }
-
-        h1{
-          text-align:center;
-          margin-bottom:20px;
-        }
-
-        table{
-          width:100%;
-          border-collapse:collapse;
-          margin-top:20px;
-        }
-
-        th,td{
-          border:1px solid #000;
-          padding:8px;
-          text-align:center;
-        }
-
-        th{
-          background:#e5e7eb;
-        }
-
-        .resumo{
-          font-size:18px;
-          margin-bottom:20px;
-        }
-
-      </style>
-
-```
-</head>
-
-<body>
-
-  <h1>📊 RELATÓRIO GERAL - FESTIVAL ECIM 2026</h1>
-
-  <p><strong>Data/Hora:</strong> ${dataHora}</p>
-
-  <div class="resumo">
-    <p><strong>PIX:</strong> ${document.getElementById("totalPix").textContent}</p>
-    <p><strong>Cartão:</strong> ${document.getElementById("totalCartao").textContent}</p>
-    <p><strong>Dinheiro:</strong> ${document.getElementById("totalDinheiro").textContent}</p>
-    <p><strong>Total Geral:</strong> ${document.getElementById("totalGeral").textContent}</p>
-  </div>
-
-  ${tabela}
-
-  <br><br>
-
-  <hr>
-
-  <p>
-    Festival ECIM 2026<br>
-    Relatório emitido automaticamente pelo sistema.
-  </p>
-
-</body>
-</html>
-```
-
-`;
-
-const janela =
-window.open('', '', 'width=1200,height=800');
-
-janela.document.write(conteudo);
-janela.document.close();
-
-setTimeout(() => {
-janela.print();
-}, 500);
-}
-
 </script>
 
 </body>
 </html>
+
 
 </body>
 </html>
