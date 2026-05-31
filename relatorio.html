@@ -63,6 +63,13 @@ Produtos Vendidos
 
 </div>
 
+<div class="flex justify-center mt-6">
+  <button onclick="imprimirRelatorio()"
+          class="bg-orange-500 text-white font-bold py-3 px-6 rounded-xl hover:bg-orange-600 transition">
+    🖨️ Imprimir Relatório
+  </button>
+</div>
+ 
 <script>
 
 function moeda(valor){
@@ -143,6 +150,9 @@ produtos.forEach(produto=>{
  `;
 });
 
+ function imprimirRelatorio() {
+  window.print();
+}
 </script>
 
 </body>
