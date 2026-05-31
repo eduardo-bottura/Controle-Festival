@@ -277,7 +277,9 @@ async function gerarPedido(carrinho, caixa) {
 
     
    async function finalizarVenda() {
-
+const carrinhoPedido = JSON.parse(
+  JSON.stringify(carrinho)
+);
   Object.values(carrinho).forEach(item => {
 
     if (!vendas[item.nome]) {
@@ -309,6 +311,10 @@ async function gerarPedido(carrinho, caixa) {
     }
   );
 
+
+     const numeroPedido =
+  await gerarPedido(carrinhoPedido, "PIX");
+     
   carrinho = {};
 
   renderCarrinho();
@@ -338,7 +344,7 @@ function atualizarFirebase() {
  renderTabelaVendas();
 
 const numeroPedido =
-  await gerarPedido(carrinho, "PIX");
+  await gerarPedido(carrinhoPedido, "PIX");
 
 alert(
   "✅ Venda finalizada!\n\n" +
