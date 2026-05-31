@@ -396,7 +396,7 @@ async function finalizarVenda() {
       atualizarTotalArrecadado();
     }
 
-    function alterarQtd(nome, delta) {
+ function alterarQtd(nome, delta) {
       if(!vendas[nome]) vendas[nome] = {qtd:0, valor: produtos.find(p=>p.nome===nome).preco};
       vendas[nome].qtd += delta;
       if (vendas[nome].qtd < 0) vendas[nome].qtd = 0;
@@ -404,7 +404,7 @@ async function finalizarVenda() {
       renderTabelaVendas();
     }
 
-  function apagarItem(nome) {
+    function apagarItem(nome) {
 
   if (confirm(`Deseja zerar as vendas de "${nome}"?`)) {
 
