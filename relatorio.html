@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório Geral - Festival ECIM 2026</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-6">
+
+<h1 class="text-3xl font-bold text-center mb-6">
+📊 RELATÓRIO GERAL - FESTIVAL ECIM 2026
+</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+
+<div class="bg-blue-600 text-white p-4 rounded-xl text-center">
+<h2 class="font-bold">PIX</h2>
+<p id="totalPix" class="text-2xl">R$ 0,00</p>
+</div>
+
+<div class="bg-green-600 text-white p-4 rounded-xl text-center">
+<h2 class="font-bold">CARTÃO</h2>
+<p id="totalCartao" class="text-2xl">R$ 0,00</p>
+</div>
+
+<div class="bg-yellow-500 text-white p-4 rounded-xl text-center">
+<h2 class="font-bold">DINHEIRO</h2>
+<p id="totalDinheiro" class="text-2xl">R$ 0,00</p>
+</div>
+
+<div class="bg-black text-white p-4 rounded-xl text-center">
+<h2 class="font-bold">TOTAL GERAL</h2>
+<p id="totalGeral" class="text-2xl">R$ 0,00</p>
+</div>
+
+</div>
+
+<div class="bg-white rounded-xl shadow p-4">
+
+<h2 class="text-2xl font-bold mb-4">
+Produtos Vendidos
+</h2>
+
+<table class="w-full border-collapse">
+
+<thead>
+<tr class="bg-gray-200">
+<th class="border p-2">Produto</th>
+<th class="border p-2">PIX</th>
+<th class="border p-2">Cartão</th>
+<th class="border p-2">Dinheiro</th>
+<th class="border p-2">Total</th>
+</tr>
+</thead>
+
+<tbody id="tabelaProdutos">
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+function moeda(valor){
+ return valor.toLocaleString('pt-BR',{
+   style:'currency',
+   currency:'BRL'
+ });
+}
+
+const vendasPix =
+ JSON.parse(localStorage.getItem("vendas_pix")) || {};
+
+const vendasCartao =
+ JSON.parse(localStorage.getItem("vendas_cartao")) || {};
+
+const vendasDinheiro =
+ JSON.parse(localStorage.getItem("vendas_dinheiro")) || {};
+
+let totalPix = 0;
+let totalCartao = 0;
+let totalDinheiro = 0;
+
+Object.values(vendasPix).forEach(item=>{
+ totalPix += item.qtd * item.valor;
+});
+
+Object.values(vendasCartao).forEach(item=>{
+ totalCartao += item.qtd * item.valor;
+});
+
+Object.values(vendasDinheiro).forEach(item=>{
+ totalDinheiro += item.qtd * item.valor;
+});
+
+document.getElementById("totalPix").textContent =
+ moeda(totalPix);
+
+document.getElementById("totalCartao").textContent =
+ moeda(totalCartao);
+
+document.getElementById("totalDinheiro").textContent =
+ moeda(totalDinheiro);
+
+document.getElementById("totalGeral").textContent =
+ moeda(totalPix + totalCartao + totalDinheiro);
+
+const produtos = new Set([
+ ...Object.keys(vendasPix),
+ ...Object.keys(vendasCartao),
+ ...Object.keys(vendasDinheiro)
+]);
+
+const tbody =
+ document.getElementById("tabelaProdutos");
+
+produtos.forEach(produto=>{
+
+ const qtdPix =
+   vendasPix[produto]?.qtd || 0;
+
+ const qtdCartao =
+   vendasCartao[produto]?.qtd || 0;
+
+ const qtdDinheiro =
+   vendasDinheiro[produto]?.qtd || 0;
+
+ const total =
+   qtdPix + qtdCartao + qtdDinheiro;
+
+ tbody.innerHTML += `
+ <tr>
+   <td class="border p-2">${produto}</td>
+   <td class="border p-2">${qtdPix}</td>
+   <td class="border p-2">${qtdCartao}</td>
+   <td class="border p-2">${qtdDinheiro}</td>
+   <td class="border p-2 font-bold">${total}</td>
+ </tr>
+ `;
+});
+
+</script>
+
+</body>
+</html>
