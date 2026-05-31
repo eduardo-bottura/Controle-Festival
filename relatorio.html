@@ -137,15 +137,9 @@ function moeda(valor){
  });
 }
 
-const vendasPix =
- JSON.parse(localStorage.getItem("vendas_pix")) || {};
-
-const vendasCartao =
- JSON.parse(localStorage.getItem("vendas_cartao")) || {};
-
-const vendasDinheiro =
- JSON.parse(localStorage.getItem("vendas_dinheiro")) || {};
-
+let vendasPix = {};
+let vendasCartao = {};
+let vendasDinheiro = {};
   const agora = new Date();
 
 document.getElementById("dataHoraRelatorio").textContent =
