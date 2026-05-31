@@ -129,7 +129,7 @@
 
     let carrinho = {};
 const CAIXA = "cartao";
-let vendas = JSON.parse(localStorage.getItem("vendas")) || {};
+let vendas = JSON.parse(localStorage.getItem("vendas_cartao")) || {};
     
 console.log("Caixa:", CAIXA);
 
@@ -210,7 +210,7 @@ console.log("Caixa:", CAIXA);
         if (!vendas[item.nome]) vendas[item.nome] = { qtd: 0, valor: item.preco };
         vendas[item.nome].qtd += item.quantidade;
       });
-      localStorage.setItem("vendas", JSON.stringify(vendas));
+      localStorage.setItem("vendas_cartao", JSON.stringify(vendas));
       carrinho = {};
       renderCarrinho();
       document.getElementById("recebido").value = "";
@@ -289,14 +289,14 @@ console.log("Caixa:", CAIXA);
       if(!vendas[nome]) vendas[nome] = {qtd:0, valor: produtos.find(p=>p.nome===nome).preco};
       vendas[nome].qtd += delta;
       if (vendas[nome].qtd < 0) vendas[nome].qtd = 0;
-      localStorage.setItem("vendas", JSON.stringify(vendas));
+      localStorage.setItem("vendas_cartao", JSON.stringify(vendas));
       renderTabelaVendas();
     }
 
     function apagarItem(nome) {
       if (confirm(`Deseja apagar todas as vendas de "${nome}"?`)) {
         delete vendas[nome];
-        localStorage.setItem("vendas", JSON.stringify(vendas));
+        localStorage.setItem("vendas_cartao", JSON.stringify(vendas));
         renderTabelaVendas();
       }
     }
