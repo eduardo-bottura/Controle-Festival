@@ -331,7 +331,7 @@ fetch(
     function apagarItem(nome) {
       if (confirm(`Deseja apagar todas as vendas de "${nome}"?`)) {
         delete vendas[nome];
-       localStorage.setItem("vendas_dinheiro", JSON.stringify(vendas));
+       atualizarFirebase();
         renderTabelaVendas();
       }
     }
