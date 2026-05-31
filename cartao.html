@@ -232,23 +232,7 @@ fetch(
       document.getElementById("recebido").value = "";
       trocoSpan.textContent = "R$ 0,00";
 
-  function atualizarFirebase() {
-  localStorage.setItem(
-    "vendas_cartao",
-    JSON.stringify(vendas)
-  );
-
-  fetch(
-    "https://festival-ecim-2026-default-rtdb.firebaseio.com/vendas_cartao.json",
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(vendas)
-    }
-  );
-}
+ 
       renderTabelaVendas();
       alert("✅ Venda finalizada e registrada!");
     }
@@ -295,6 +279,24 @@ fetch(
       novaJanela.print();
     }
 
+
+  function atualizarFirebase() {
+  localStorage.setItem(
+    "vendas_cartao",
+    JSON.stringify(vendas)
+  );
+
+  fetch(
+    "https://festival-ecim-2026-default-rtdb.firebaseio.com/vendas_cartao.json",
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(vendas)
+    }
+  );
+}
     function renderTabelaVendas() {
       const tbody = document.querySelector("#tabelaVendas tbody");
       tbody.innerHTML = "";
