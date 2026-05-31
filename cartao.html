@@ -128,7 +128,8 @@
     ];
 
     let carrinho = {};
-    let vendas = JSON.parse(localStorage.getItem("vendas")) || {};
+const CAIXA = "cartao";
+let vendas = JSON.parse(localStorage.getItem("vendas")) || {};
 
     const produtosDivs = {
       rapidos: document.getElementById("produtos-rapidos"),
