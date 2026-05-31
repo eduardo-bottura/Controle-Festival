@@ -130,6 +130,8 @@
     let carrinho = {};
 const CAIXA = "cartao";
 let vendas = JSON.parse(localStorage.getItem("vendas")) || {};
+    
+console.log("Caixa:", CAIXA);
 
     const produtosDivs = {
       rapidos: document.getElementById("produtos-rapidos"),
