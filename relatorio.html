@@ -26,9 +26,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-window.db = db;
-window.ref = ref;
-window.onValue = onValue;
+globalThis.db = db;
+globalThis.ref = ref;
+globalThis.onValue = onValue;
 
 </script>
   <style>
@@ -130,6 +130,10 @@ Produtos Vendidos
  
 <script>
 
+const db = globalThis.db;
+const ref = globalThis.ref;
+const onValue = globalThis.onValue;
+
 function moeda(valor){
  return valor.toLocaleString('pt-BR',{
    style:'currency',
@@ -160,72 +164,84 @@ document.getElementById("dataHoraRelatorio").textContent =
   " às " +
   agora.toLocaleTimeString('pt-BR');
 
-let totalPix = 0;
-let totalCartao = 0;
-let totalDinheiro = 0;
 
-Object.values(vendasPix).forEach(item=>{
- totalPix += item.qtd * item.valor;
-});
+  function atualizarRelatorio() {
 
-Object.values(vendasCartao).forEach(item=>{
- totalCartao += item.qtd * item.valor;
-});
+  let totalPix = 0;
+  let totalCartao = 0;
+  let totalDinheiro = 0;
 
-Object.values(vendasDinheiro).forEach(item=>{
- totalDinheiro += item.qtd * item.valor;
-});
+  Object.values(vendasPix).forEach(item=>{
+    totalPix += item.qtd * item.valor;
+  });
 
-document.getElementById("totalPix").textContent =
- moeda(totalPix);
+  Object.values(vendasCartao).forEach(item=>{
+    totalCartao += item.qtd * item.valor;
+  });
 
-document.getElementById("totalCartao").textContent =
- moeda(totalCartao);
+  Object.values(vendasDinheiro).forEach(item=>{
+    totalDinheiro += item.qtd * item.valor;
+  });
 
-document.getElementById("totalDinheiro").textContent =
- moeda(totalDinheiro);
+  document.getElementById("totalPix").textContent =
+    moeda(totalPix);
 
-document.getElementById("totalGeral").textContent =
- moeda(totalPix + totalCartao + totalDinheiro);
+  document.getElementById("totalCartao").textContent =
+    moeda(totalCartao);
 
-const produtos = new Set([
- ...Object.keys(vendasPix),
- ...Object.keys(vendasCartao),
- ...Object.keys(vendasDinheiro)
-]);
+  document.getElementById("totalDinheiro").textContent =
+    moeda(totalDinheiro);
 
-const tbody =
- document.getElementById("tabelaProdutos");
+  document.getElementById("totalGeral").textContent =
+    moeda(totalPix + totalCartao + totalDinheiro);
 
-produtos.forEach(produto=>{
+  const produtos = new Set([
+    ...Object.keys(vendasPix),
+    ...Object.keys(vendasCartao),
+    ...Object.keys(vendasDinheiro)
+  ]);
 
- const qtdPix =
-   vendasPix[produto]?.qtd || 0;
+  const tbody = document.getElementById("tabelaProdutos");
 
- const qtdCartao =
-   vendasCartao[produto]?.qtd || 0;
+  tbody.innerHTML = "";
 
- const qtdDinheiro =
-   vendasDinheiro[produto]?.qtd || 0;
+  produtos.forEach(produto=>{
 
- const total =
-   qtdPix + qtdCartao + qtdDinheiro;
+    const qtdPix = vendasPix[produto]?.qtd || 0;
+    const qtdCartao = vendasCartao[produto]?.qtd || 0;
+    const qtdDinheiro = vendasDinheiro[produto]?.qtd || 0;
 
- tbody.innerHTML += `
- <tr>
-   <td class="border p-2">${produto}</td>
-   <td class="border p-2">${qtdPix}</td>
-   <td class="border p-2">${qtdCartao}</td>
-   <td class="border p-2">${qtdDinheiro}</td>
-   <td class="border p-2 font-bold">${total}</td>
- </tr>
- `;
-});
+    const total = qtdPix + qtdCartao + qtdDinheiro;
 
+    tbody.innerHTML += `
+      <tr>
+        <td class="border p-2">${produto}</td>
+        <td class="border p-2">${qtdPix}</td>
+        <td class="border p-2">${qtdCartao}</td>
+        <td class="border p-2">${qtdDinheiro}</td>
+        <td class="border p-2 font-bold">${total}</td>
+      </tr>
+    `;
+  });
+}
  function imprimirRelatorio() {
   window.print();
 }
 
+  onValue(ref(db, "vendas_pix"), (snapshot) => {
+  vendasPix = snapshot.val() || {};
+  atualizarRelatorio();
+});
+
+onValue(ref(db, "vendas_cartao"), (snapshot) => {
+  vendasCartao = snapshot.val() || {};
+  atualizarRelatorio();
+});
+
+onValue(ref(db, "vendas_dinheiro"), (snapshot) => {
+  vendasDinheiro = snapshot.val() || {};
+  atualizarRelatorio();
+});
 </script>
 
 </body>
