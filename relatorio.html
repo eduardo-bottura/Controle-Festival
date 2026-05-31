@@ -43,7 +43,10 @@
 <h1 class="text-3xl font-bold text-center mb-6">
 📊 RELATÓRIO GERAL - FESTIVAL ECIM 2026
 </h1>
-
+  
+<p id="dataHoraRelatorio"
+   class="text-center text-gray-600 mb-6 font-semibold">
+</p>
 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
 
 <div class="bg-blue-600 text-white p-4 rounded-xl text-center">
@@ -117,6 +120,14 @@ const vendasCartao =
 
 const vendasDinheiro =
  JSON.parse(localStorage.getItem("vendas_dinheiro")) || {};
+
+  const agora = new Date();
+
+document.getElementById("dataHoraRelatorio").textContent =
+  "Relatório emitido em: " +
+  agora.toLocaleDateString('pt-BR') +
+  " às " +
+  agora.toLocaleTimeString('pt-BR');
 
 let totalPix = 0;
 let totalCartao = 0;
