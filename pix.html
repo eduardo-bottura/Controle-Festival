@@ -16,6 +16,31 @@
       font-weight: bold;
     }
   </style>
+
+  <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+import { getDatabase }
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDxk7YXAF0ITQZcweP3SV59SGz4JlyHyU",
+  authDomain: "festival-ecim-2026.firebaseapp.com",
+  databaseURL: "https://festival-ecim-2026-default-rtdb.firebaseio.com",
+  projectId: "festival-ecim-2026",
+  storageBucket: "festival-ecim-2026.firebasestorage.app",
+  messagingSenderId: "867847713962",
+  appId: "1:867847713962:web:80971fe6b8de94e5f6ccd3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+window.db = db;
+
+</script>
+  
 </head>
 <body class="bg-gray-100 font-sans">
 
