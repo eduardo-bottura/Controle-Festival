@@ -271,6 +271,24 @@ window.db = db;
 
   trocoSpan.textContent = "R$ 0,00";
 
+function atualizarFirebase() {
+  localStorage.setItem(
+    "vendas_pix",
+    JSON.stringify(vendas)
+  );
+
+  fetch(
+    "https://festival-ecim-2026-default-rtdb.firebaseio.com/vendas_pix.json",
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(vendas)
+    }
+  );
+}
+     
   renderTabelaVendas();
 
   alert("✅ Venda finalizada e registrada!");
@@ -319,6 +337,25 @@ window.db = db;
       novaJanela.print();
     }
 
+
+
+    function atualizarFirebase() {
+  localStorage.setItem(
+    "vendas_pix",
+    JSON.stringify(vendas)
+  );
+
+  fetch(
+    "https://festival-ecim-2026-default-rtdb.firebaseio.com/vendas_pix.json",
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(vendas)
+    }
+  );
+}
     function renderTabelaVendas() {
       const tbody = document.querySelector("#tabelaVendas tbody");
       tbody.innerHTML = "";
@@ -347,14 +384,14 @@ window.db = db;
       if(!vendas[nome]) vendas[nome] = {qtd:0, valor: produtos.find(p=>p.nome===nome).preco};
       vendas[nome].qtd += delta;
       if (vendas[nome].qtd < 0) vendas[nome].qtd = 0;
-      localStorage.setItem("vendas_pix", JSON.stringify(vendas));
+      atualizarFirebase();
       renderTabelaVendas();
     }
 
     function apagarItem(nome) {
       if (confirm(`Deseja apagar todas as vendas de "${nome}"?`)) {
         delete vendas[nome];
-        localStorage.setItem("vendas_pix", JSON.stringify(vendas));
+        atualizarFirebase();
         renderTabelaVendas();
       }
     }
