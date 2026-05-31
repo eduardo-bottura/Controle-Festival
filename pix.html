@@ -131,6 +131,8 @@
     const CAIXA = "pix";
     let vendas = JSON.parse(localStorage.getItem("vendas")) || {};
 
+    console.log("Caixa:", CAIXA);
+    
     const produtosDivs = {
       rapidos: document.getElementById("produtos-rapidos"),
       bebidas: document.getElementById("produtos-bebidas"),
