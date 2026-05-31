@@ -210,7 +210,23 @@ console.log("Caixa:", CAIXA);
         if (!vendas[item.nome]) vendas[item.nome] = { qtd: 0, valor: item.preco };
         vendas[item.nome].qtd += item.quantidade;
       });
-      localStorage.setItem("vendas_dinheiro", JSON.stringify(vendas));
+      // Continua salvando localmente (backup)
+localStorage.setItem(
+  "vendas_dinheiro",
+  JSON.stringify(vendas)
+);
+
+// Salva também no Firebase
+fetch(
+  "https://festival-ecim-2026-default-rtdb.firebaseio.com/vendas_dinheiro.json",
+  {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(vendas)
+  }
+);
       carrinho = {};
       renderCarrinho();
       document.getElementById("recebido").value = "";
