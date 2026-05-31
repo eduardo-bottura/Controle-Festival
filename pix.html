@@ -275,11 +275,40 @@ async function gerarPedido(carrinho, caixa) {
 }
 
 
- 
+    
+   async function finalizarVenda() {
 
-     const numeroPedido =
-  await gerarPedido(carrinhoPedido, "PIX");
-     
+  Object.values(carrinho).forEach(item => {
+
+    if (!vendas[item.nome]) {
+      vendas[item.nome] = {
+        qtd: 0,
+        valor: item.preco
+      };
+    }
+
+    vendas[item.nome].qtd += item.quantidade;
+
+  });
+
+  // Continua salvando localmente (backup)
+  localStorage.setItem(
+    "vendas_pix",
+    JSON.stringify(vendas)
+  );
+
+  // Salva também no Firebase
+  fetch(
+    "https://festival-ecim-2026-default-rtdb.firebaseio.com/vendas_pix.json",
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(vendas)
+    }
+  );
+
   carrinho = {};
 
   renderCarrinho();
@@ -309,67 +338,25 @@ function atualizarFirebase() {
  renderTabelaVendas();
 
 const numeroPedido =
-  await gerarPedido(carrinhoPedido, "PIX");
+  await gerarPedido(carrinho, "PIX");
 
 alert(
   "✅ Venda finalizada!\n\n" +
   "Pedido Nº " + numeroPedido
 );
 
-  async function finalizarVenda() {
-
-  const carrinhoPedido = JSON.parse(
-    JSON.stringify(carrinho)
-  );
-
-  Object.values(carrinho).forEach(item => {
-
-    if (!vendas[item.nome]) {
-      vendas[item.nome] = {
-        qtd: 0,
-        valor: item.preco
-      };
+    function mostrarRelatorio() {
+      let texto = "📊 Relatório de Vendas:\n\n";
+      let arrecadadoTotal = 0;
+      for (let nome in vendas) {
+        const item = vendas[nome];
+        const totalItem = item.qtd * item.valor;
+        texto += `${nome}: ${item.qtd} vendidos - R$ ${formatarValor(totalItem)}\n`;
+        arrecadadoTotal += totalItem;
+      }
+      texto += `\n💰 Total arrecadado: R$ ${formatarValor(arrecadadoTotal)}`;
+      alert(texto);
     }
-
-    vendas[item.nome].qtd += item.quantidade;
-
-  });
-
-  localStorage.setItem(
-    "vendas_pix",
-    JSON.stringify(vendas)
-  );
-
-  await fetch(
-    "https://festival-ecim-2026-default-rtdb.firebaseio.com/vendas_pix.json",
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(vendas)
-    }
-  );
-
-  const numeroPedido =
-    await gerarPedido(carrinhoPedido, "PIX");
-
-  carrinho = {};
-
-  renderCarrinho();
-
-  document.getElementById("recebido").value = "";
-
-  trocoSpan.textContent = "R$ 0,00";
-
-  renderTabelaVendas();
-
-  alert(
-    "✅ Venda finalizada!\n\nPedido Nº " +
-    numeroPedido
-  );
-
-}
 
     function imprimirRelatorio() {
       let relatorio = `<html><head><title>Relatório de Vendas</title><style>
