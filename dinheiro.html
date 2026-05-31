@@ -329,12 +329,19 @@ fetch(
     }
 
     function apagarItem(nome) {
-      if (confirm(`Deseja apagar todas as vendas de "${nome}"?`)) {
-        delete vendas[nome];
-       atualizarFirebase();
-        renderTabelaVendas();
-      }
-    }
+
+  if (confirm(`Deseja zerar as vendas de "${nome}"?`)) {
+
+    if (!vendas[nome]) return;
+
+    vendas[nome].qtd = 0;
+
+    atualizarFirebase();
+    renderTabelaVendas();
+
+  }
+
+}
 
     function atualizarTotalArrecadado() {
       let totalGeral = 0;
