@@ -276,7 +276,7 @@ async function gerarPedido(carrinho, caixa) {
 
 
     
-   function finalizarVenda() {
+   async function finalizarVenda() {
 
   Object.values(carrinho).forEach(item => {
 
@@ -335,11 +335,15 @@ function atualizarFirebase() {
   );
 }
      
-  renderTabelaVendas();
+ renderTabelaVendas();
 
-  alert("✅ Venda finalizada e registrada!");
+const numeroPedido =
+  await gerarPedido(carrinho, "PIX");
 
-}
+alert(
+  "✅ Venda finalizada!\n\n" +
+  "Pedido Nº " + numeroPedido
+);
 
     function mostrarRelatorio() {
       let texto = "📊 Relatório de Vendas:\n\n";
