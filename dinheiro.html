@@ -218,6 +218,18 @@ localStorage.setItem(
 
 // Salva também no Firebase
 fetch(
+
+  fetch(
+  "https://festival-ecim-2026-default-rtdb.firebaseio.com/vendas_dinheiro.json",
+  {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(vendas)
+  }
+)
+.then(() => alert("DINHEIRO ENVIADO PARA FIREBASE"));
   "https://festival-ecim-2026-default-rtdb.firebaseio.com/vendas_dinheiro.json",
   {
     method: "PUT",
