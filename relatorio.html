@@ -6,6 +6,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Relatório Geral - Festival ECIM 2026</title>
 <script src="https://cdn.tailwindcss.com"></script>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getDatabase, ref, onValue }
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDxk7YXAF0ITQZcweP3SV59SGz4JlyHyU",
+  authDomain: "festival-ecim-2026.firebaseapp.com",
+  databaseURL: "https://festival-ecim-2026-default-rtdb.firebaseio.com",
+  projectId: "festival-ecim-2026",
+  storageBucket: "festival-ecim-2026.firebasestorage.app",
+  messagingSenderId: "867847713962",
+  appId: "1:867847713962:web:80971fe6b8de94e5f6ccd3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+window.db = db;
+window.ref = ref;
+window.onValue = onValue;
+
+</script>
   <style>
 
 @media print {
