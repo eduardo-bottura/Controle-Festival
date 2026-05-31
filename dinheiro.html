@@ -279,6 +279,23 @@ fetch(
       novaJanela.print();
     }
 
+    function atualizarFirebase() {
+  localStorage.setItem(
+    "vendas_dinheiro",
+    JSON.stringify(vendas)
+  );
+
+  fetch(
+    "https://festival-ecim-2026-default-rtdb.firebaseio.com/vendas_dinheiro.json",
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(vendas)
+    }
+  );
+}
     function renderTabelaVendas() {
       const tbody = document.querySelector("#tabelaVendas tbody");
       tbody.innerHTML = "";
